@@ -49,11 +49,11 @@ pipeline {
             }
             steps {
                 script {
-                    sh ''' #!/bin/bash
-                    aws cloudformation describe-stacks --stack-name \${params.STACKNAME}
+                    sh 'aws cloudformation describe-stacks --stack-name ${params.STACKNAME}'
 
-                    stackexists=$?
+                    sh 'stackexists=$?'
 
+                    sh '''
                     if [[ $stackexists -eq 0 ]]; then
                         aws cloudformation update-stack --stack-name "${params.STACKNAME}" --template-body file://jira.yaml --region "${params.AWS_REGION}" --parameters file://jira.parms.json
                         aws cloudformation wait stack-update-complete --stack-name "${params.STACKNAME}" --region "${params.AWS_REGION}"
