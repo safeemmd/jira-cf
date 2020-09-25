@@ -3,7 +3,6 @@ pipeline {
 
     options {
         disableConcurrentBuilds()
-
     }
         
     parameters {
@@ -19,12 +18,6 @@ pipeline {
         stage('Prepare Agent Environment') {
             steps {
                 deleteDir()
-
-                sh '''#!/bin/bash
-                pwd 
-                echo
-                ls -l
-                '''
 
                 writeFile file: 'jira.parms.json',
                   text: /
@@ -56,18 +49,18 @@ pipeline {
             }
             steps {
                 sh """
-                aws cloudformation describe-stacks --stack-name \${params.STACKNAME}
+                aws cloudformation describe-stacks --stack-name "${params.STACKNAME}"
 
                 stackexists=$?
 
                 if [[ $stackexists -eq 0 ]]; then
-                  echo 'Attempting to update stack \${params.STACKNAME}'
-                  aws cloudformation update-stack --stack-name \${params.STACKNAME} --template-body file://jira.yaml --region \${params.AWS_REGION} --parameters file://jira.parms.json
-                  aws cloudformation wait stack-update-complete --stack-name \${params.STACKNAME} --region \${params.AWS_REGION}
+                  echo 'Attempting to update stack "${params.STACKNAME}"'
+                  aws cloudformation update-stack --stack-name "${params.STACKNAME}" --template-body file://jira.yaml --region "${params.AWS_REGION}" --parameters file://jira.parms.json
+                  aws cloudformation wait stack-update-complete --stack-name "${params.STACKNAME}" --region "${params.AWS_REGION}"
                 else 
-                  echo 'Attempting to create stack "\${params.STACKNAME}'
-                  aws cloudformation create-stack --stack-name \${params.STACKNAME} --template-body file://jira.yaml --region \${params.AWS_REGION} --parameters file://jira.parms.json
-                  aws cloudformation wait stack-create-complete --stack-name \${params.STACKNAME} --region \${params.AWS_REGION}
+                  echo 'Attempting to create stack "${params.STACKNAME}"'
+                  aws cloudformation create-stack --stack-name "${params.STACKNAME}" --template-body file://jira.yaml --region "${params.AWS_REGION}" --parameters file://jira.parms.json
+                  aws cloudformation wait stack-create-complete --stack-name "${params.STACKNAME}" --region "${params.AWS_REGION}"
                 fi
 
                 """
