@@ -50,7 +50,7 @@ pipeline {
             steps {
                 script {
                     sh '''#!/bin/bash -xe
-                    aws cloudformation describe-stacks --stack-name ${params.STACKNAME}
+                    aws cloudformation describe-stacks --stack-name \$params.STACKNAME
 
                     stackexists=$?
 
