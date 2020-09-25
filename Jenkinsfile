@@ -49,6 +49,8 @@ pipeline {
             }
             steps {
                 script {
+                    git 'https://github.com/safeemmd/jira-cf.git'
+                    
                     sh '''mkdir -p ~/.aws/
                     cat > ~/.aws/config <<EOF
 [default]
