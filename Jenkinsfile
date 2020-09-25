@@ -58,7 +58,7 @@ EOF
 '''
                     sh "aws cloudformation describe-stacks --stack-name ${env.STACKNAME}"
 
-                    sh "stackexists=$?"
+                    sh "stackexists=\$?"
 
                     sh "if [[ $stackexists -eq 0 ]]; then aws cloudformation update-stack --stack-name ${env.STACKNAME} --template-body file://jira.yaml --region ${env.AWS_REGION} --parameters file://jira.parms.json && aws cloudformation wait stack-update-complete --stack-name ${env.STACKNAME} --region ${env.AWS_REGION} else  aws cloudformation create-stack --stack-name ${env.STACKNAME} --template-body file://jira.yaml --region ${env.AWS_REGION} --parameters file://jira.parms.json && aws cloudformation wait stack-create-complete --stack-name ${env.STACKNAME} --region ${env.AWS_REGION} fi"
                 }
