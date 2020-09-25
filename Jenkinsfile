@@ -3,6 +3,7 @@ pipeline {
 
     options {
         disableConcurrentBuilds()
+
     }
         
     parameters {
@@ -54,13 +55,13 @@ pipeline {
                 timeout(time: 1, unit: 'HOURS')
             }
             steps {
-                sh '''#!/bin/bash -x                
+                sh """#!/bin/bash -x                
 
                 aws cloudformation describe-stacks --stack-name ${params.STACKNAME}
 
                 stackexists=$?
 
-                if [[ stackexists -eq 0 ]]; then
+                if [[ $stackexists -eq 0 ]]; then
                   echo "Attempting to update stack ${params.STACKNAME}"
                   aws cloudformation update-stack --stack-name ${params.STACKNAME} --template-body file://jira.yaml --region ${params.AWS_REGION} --parameters file://jira.parms.json
                   aws cloudformation wait stack-update-complete --stack-name ${params.STACKNAME} --region ${params.AWS_REGION}
@@ -70,7 +71,7 @@ pipeline {
                   aws cloudformation wait stack-create-complete --stack-name ${params.STACKNAME} --region ${params.AWS_REGION}
                 fi
 
-                '''
+                """
 
             } // End of steps
         } // End of stage
