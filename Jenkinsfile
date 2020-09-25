@@ -49,8 +49,8 @@ pipeline {
             }
             steps {
                 script {
-                    sh '''#!/bin/bash -xe
-                    aws cloudformation describe-stacks --stack-name \${params.STACKNAME}
+                    sh """#!/bin/bash -xe
+                    aws cloudformation describe-stacks --stack-name ${params.STACKNAME}
 
                     stackexists=$?
 
@@ -61,7 +61,7 @@ pipeline {
                         aws cloudformation create-stack --stack-name ${params.STACKNAME} --template-body file://jira.yaml --region ${params.AWS_REGION} --parameters file://jira.parms.json
                         aws cloudformation wait stack-create-complete --stack-name ${params.STACKNAME} --region ${params.AWS_REGION}
                     fi
-                    '''
+                    """
                 }
 
             } // End of steps
