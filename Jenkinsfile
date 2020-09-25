@@ -49,24 +49,18 @@ pipeline {
             }
             steps {
                 script {
-                    sh """mkdir -p ~/.aws/
+                    sh '''mkdir -p ~/.aws/
                     cat > ~/.aws/config <<EOF
 [default]
 region = us-east-2
 output = json
 EOF
-                    aws cloudformation describe-stacks --stack-name ${env.STACKNAME}
+'''
+                    sh "aws cloudformation describe-stacks --stack-name ${env.STACKNAME}"
 
-                    stackexists=$?
+                    sh "stackexists=$?"
 
-                    if [[ $stackexists -eq 0 ]]; then
-                        aws cloudformation update-stack --stack-name ${env.STACKNAME} --template-body file://jira.yaml --region ${env.AWS_REGION} --parameters file://jira.parms.json
-                        aws cloudformation wait stack-update-complete --stack-name ${env.STACKNAME} --region ${env.AWS_REGION}
-                    else 
-                        aws cloudformation create-stack --stack-name ${env.STACKNAME} --template-body file://jira.yaml --region ${env.AWS_REGION} --parameters file://jira.parms.json
-                        aws cloudformation wait stack-create-complete --stack-name ${env.STACKNAME} --region ${env.AWS_REGION}
-                    fi
-                    """
+                    sh "if [[ $stackexists -eq 0 ]]; then aws cloudformation update-stack --stack-name ${env.STACKNAME} --template-body file://jira.yaml --region ${env.AWS_REGION} --parameters file://jira.parms.json && aws cloudformation wait stack-update-complete --stack-name ${env.STACKNAME} --region ${env.AWS_REGION} else  aws cloudformation create-stack --stack-name ${env.STACKNAME} --template-body file://jira.yaml --region ${env.AWS_REGION} --parameters file://jira.parms.json && aws cloudformation wait stack-create-complete --stack-name ${env.STACKNAME} --region ${env.AWS_REGION} fi"
                 }
 
             } // End of steps
