@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-    properties([
+    options([
         disableConcurrentBuilds(), 
         parameters([
             string(defaultValue: 'vpc-b68224dd', description: 'VPC ID', name: 'VPCID', trim: true), 
