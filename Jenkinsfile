@@ -49,7 +49,7 @@ pipeline {
             }
             steps {
                 script {
-                    sh 'aws cloudformation describe-stacks --stack-name "${env.STACKNAME}"'
+                    sh "aws cloudformation describe-stacks --stack-name ${env.STACKNAME}"
 
                     sh 'stackexists=$?'
 
