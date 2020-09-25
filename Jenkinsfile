@@ -48,7 +48,7 @@ pipeline {
                 timeout(time: 1, unit: 'HOURS')
             }
             steps {
-                sh """
+                sh '''
                 aws cloudformation describe-stacks --stack-name ${params.STACKNAME}
 
                 stackexists=$?
@@ -63,7 +63,7 @@ pipeline {
                   aws cloudformation wait stack-create-complete --stack-name ${params.STACKNAME} --region ${params.AWS_REGION}
                 fi
 
-                """
+                '''
 
             } // End of steps
         } // End of stage
