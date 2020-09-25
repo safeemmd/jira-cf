@@ -48,22 +48,25 @@ pipeline {
                 timeout(time: 1, unit: 'HOURS')
             }
             steps {
-                sh '''#!/bin/bash
-                aws cloudformation describe-stacks --stack-name "${env.STACKNAME}"
+                script {
+                    sh '''#!/bin/bash
+                    aws cloudformation describe-stacks --stack-name ${env.STACKNAME}
 
-                stackexists=$?
+                    stackexists=$?
 
-                if [[ $stackexists -eq 0 ]]; then
-                  
-                  aws cloudformation update-stack --stack-name "${env.STACKNAME}" --template-body file://jira.yaml --region "${env.AWS_REGION}" --parameters file://jira.parms.json
-                  aws cloudformation wait stack-update-complete --stack-name "${env.STACKNAME}" --region "${env.AWS_REGION}"
-                else 
-                  
-                  aws cloudformation create-stack --stack-name "${env.STACKNAME}" --template-body file://jira.yaml --region "${env.AWS_REGION}" --parameters file://jira.parms.json
-                  aws cloudformation wait stack-create-complete --stack-name "${env.STACKNAME}" --region "${env.AWS_REGION}"
-                fi
+                    if [[ $stackexists -eq 0 ]]; then
+                    
+                    aws cloudformation update-stack --stack-name "${env.STACKNAME}" --template-body file://jira.yaml --region "${env.AWS_REGION}" --parameters file://jira.parms.json
+                    aws cloudformation wait stack-update-complete --stack-name "${env.STACKNAME}" --region "${env.AWS_REGION}"
+                    else 
+                    
+                    aws cloudformation create-stack --stack-name "${env.STACKNAME}" --template-body file://jira.yaml --region "${env.AWS_REGION}" --parameters file://jira.parms.json
+                    aws cloudformation wait stack-create-complete --stack-name "${env.STACKNAME}" --region "${env.AWS_REGION}"
+                    fi
 
-                '''
+                    '''
+
+                }
 
             } // End of steps
         } // End of stage
