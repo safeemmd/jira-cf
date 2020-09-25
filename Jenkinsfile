@@ -5,14 +5,14 @@ pipeline {
         disableConcurrentBuilds()
     }
         
-    parameters {
-        string(defaultValue: 'jira', description: 'Stack Name', name: 'STACKNAME', trim: true)
-        string(defaultValue: 'us-east-2', description: 'AWS Region', name: 'AWS_REGION', trim: true)
-        string(defaultValue: 'vpc-b68224dd', description: 'VPC ID', name: 'VPCID', trim: true)
-        string(defaultValue: 'subnet-1c9b9f66,subnet-4911df22', description: 'Subnets', name: 'Subnet', trim: true)
-        string(defaultValue: 'ami-000e7ce4dd68e7a11', description: 'AMI Instance', name: 'AMIID', trim: true)
-        string(defaultValue: 't2.medium', description: 'Instance Type', name: 'InstanceTypeParam', trim: true)
-    } 
+//    parameters {
+//        string(defaultValue: 'jira', description: 'Stack Name', name: 'STACKNAME', trim: true)
+ //       string(defaultValue: 'us-east-2', description: 'AWS Region', name: 'AWS_REGION', trim: true)
+  //      string(defaultValue: 'vpc-b68224dd', description: 'VPC ID', name: 'VPCID', trim: true)
+  //      string(defaultValue: 'subnet-1c9b9f66,subnet-4911df22', description: 'Subnets', name: 'Subnet', trim: true)
+   //     string(defaultValue: 'ami-000e7ce4dd68e7a11', description: 'AMI Instance', name: 'AMIID', trim: true)
+    //    string(defaultValue: 't2.medium', description: 'Instance Type', name: 'InstanceTypeParam', trim: true)
+    //} 
 
     stages {
         stage('Prepare Agent Environment') {
@@ -24,19 +24,19 @@ pipeline {
                   [
                     {
                         "ParameterKey": "VPCID",
-                        "ParameterValue": "${params.VPCID}"
+                        "ParameterValue": "${env.VPCID}"
                     },
                     {
                         "ParameterKey": "Subnet",
-                        "ParameterValue": "${params.Subnet}"
+                        "ParameterValue": "${env.Subnet}"
                     },
                     {
                         "ParameterKey": "AMIID",
-                        "ParameterValue": "${params.AMIID}"
+                        "ParameterValue": "${env.AMIID}"
                     },
                     {
                         "ParameterKey": "InstanceTypeParam",
-                        "ParameterValue": "${params.InstanceTypeParam}"
+                        "ParameterValue": "${env.InstanceTypeParam}"
                     }
                   ]
                 /
